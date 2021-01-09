@@ -38,22 +38,33 @@ class UI {
         });
     }
 
-    async AddANewBook(book) {
+    async addANewBook(book) {
         await bookService.postBook(book);
-        this.ClearBookForm();
+        this.clearBookForm();
         this.renderBooks();
     }
 
-    ClearBookForm() {
+    clearBookForm() {
         document.getElementById('book-form').reset();
     }
 
-    RenderMessage() {
+    renderMessage(message, colorMessage, secondsToRemove) {
+        const div = document.createElement('div');
+        div.className = `alert alert-${colorMessage} message`;
+        div.appendChild(document.createTextNode(message));
 
+        const container = document.querySelector('.col-md-4');
+        const bookForm = document.querySelector('#book-form');
+
+        container.insertBefore(div, bookForm);
+        setTimeout(() => {
+            document.querySelector('.message').remove();
+        }, secondsToRemove);
     }
 
-    DeleteBook() {
-
+    async deleteBook(bookId) {
+        await bookService.deleteBook(bookId);
+        this.renderBooks();
     }
 }
 
